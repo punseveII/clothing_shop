@@ -3,9 +3,9 @@ import { LinksWrapper, TitleWrapper, Wrapper } from "./App.styled";
 
 import { Cart } from "../Cart";
 import { Products } from "../Products";
-import { ClothingShopContext } from "../useContext";
+import { ShopContext } from "../../context";
 import { useReducer } from "react";
-import { add, initialState, remove, shopReducer, update } from "../useReducer";
+import { add, addWish, decreaseQty, increaseQty, initialState, remove, removeWish, shopReducer, update} from "../hooks";
 import { Product } from "../../models";
 import { WishList } from "../Wishlist/Wishlist";
 import { CheckOut } from "../CheckOut";
@@ -20,13 +20,57 @@ export const App = () => {
     dispatch(add(updatedCart));
   };
 
-  const removeItem = (product: Product) => {
+  const addToWish = (product: Product) => {
+    const updatedList = state.wishes.concat(product);
+
+    dispatch(addWish(updatedList));
+  };
+
+  const removeFromWish = (product: Product) => {
+    const updatedList = state.wishes.filter(
+      (currentProduct: Product) => currentProduct.name !== product.name
+    );
+
+    dispatch(removeWish(updatedList));
+  };
+
+  const removeFromCart = (product: Product) => {
     const updatedCart = state.products.filter(
       (currentProduct: Product) => currentProduct.name !== product.name
     );
     updatePrice(updatedCart);
 
     dispatch(remove(updatedCart));
+  };
+
+  const increaseOrder = (product: Product) => {
+    const updatedList = state.products.map((currentProduct: Product) => {
+      if (currentProduct.name === product.name) {
+        return {
+          ...currentProduct,
+          quantity: currentProduct.quantity + 1,
+        };
+      }
+      return currentProduct;
+    });
+
+    updatePrice(updatedList);
+    dispatch(increaseQty(updatedList));
+  };
+
+  const decreaseOrder = (product: Product) => {
+    const updatedList = state.products.map((currentProduct: Product) => {
+      if (currentProduct.name === product.name) {
+        return {
+          ...currentProduct,
+          quantity: currentProduct.quantity - 1,
+        };
+      }
+      return currentProduct;
+    });
+
+    updatePrice(updatedList);
+    dispatch(decreaseQty(updatedList));
   };
 
   const updatePrice = (products: [] = []) => {
@@ -38,11 +82,16 @@ export const App = () => {
   const value = {
     total: state.total,
     products: state.products,
+    wishes: state.wishes,
     addToCart,
-    removeItem
+    removeFromCart,
+    addToWish,
+    removeFromWish,
+    increaseOrder,
+    decreaseOrder
   }
   return (
-    <ClothingShopContext.Provider value={value}>
+    <ShopContext.Provider value={value}>
       <Wrapper>
         <TitleWrapper>
           <h1>Clothing Shop Starter Project</h1>
@@ -60,6 +109,6 @@ export const App = () => {
           <Route path="/checkout" element={<CheckOut />} />
         </Routes>
       </Wrapper>
-    </ClothingShopContext.Provider>
+    </ShopContext.Provider>
   );
 };

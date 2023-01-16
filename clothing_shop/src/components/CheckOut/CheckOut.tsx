@@ -1,14 +1,8 @@
 import { useContext } from "react";
-import { ShopContext } from "../context";
+import { ShopContext } from "../../context";
 import { Product } from "../../models";
 import { Title } from "../Cart";
-import {
-  Det,
-  CheckOutHeader,
-  CheckOutTable,
-  ItemWrapper,
-  OrderButton,
-} from "./CheckOut.styled";
+import { Det, CheckOutHeader, CheckOutTable, ItemWrapper, OrderButton} from "./CheckOut.styled";
 
 
 
