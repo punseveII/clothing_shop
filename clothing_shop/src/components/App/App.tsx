@@ -7,6 +7,8 @@ import { ClothingShopContext } from "../useContext";
 import { useReducer } from "react";
 import { add, initialState, remove, shopReducer, update } from "../useReducer";
 import { Product } from "../../models";
+import { WishList } from "../Wishlist/Wishlist";
+import { CheckOut } from "../CheckOut";
 
 export const App = () => {
   const [state, dispatch] = useReducer(shopReducer, initialState);
@@ -48,10 +50,14 @@ export const App = () => {
         <LinksWrapper>
           <Link to="/">Home</Link>
           <Link to="/cart">Cart</Link>
+          <Link to="/wish">Wishlist</Link>
+          <Link to="/checkout">Checkout</Link>
         </LinksWrapper>
         <Routes>
           <Route path="/" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/wish" element={<WishList />} />
+          <Route path="/checkout" element={<CheckOut />} />
         </Routes>
       </Wrapper>
     </ClothingShopContext.Provider>

@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { ShopContext } from "../";
-import { Product } from "../../models/Product";
+import { ShopContext } from "../context";
+import { Product } from "../../models";
 import { Title } from "../Cart";
 import {
   Det,
